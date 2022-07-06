@@ -1,4 +1,4 @@
-package Calculation;
+package calculation;
 
 import item.work.Check;
 
