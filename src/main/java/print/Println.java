@@ -29,6 +29,6 @@ public class Println extends Setting implements PrintWork {
         int start = line.indexOf(SPECIFIED)+SPECIFIED.length();
         if (line.strip().startsWith(SPECIFIED + " ")) start += 1;
         line = line.substring(start);
-        System.out.println(line + "\n");
+        System.out.println(line);
     }
 }
