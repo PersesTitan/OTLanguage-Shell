@@ -1,8 +1,7 @@
 package item;
 
-import Calculation.Account;
-import Calculation.Calculation;
-import Variable.*;
+import calculation.Account;
+import calculation.Calculation;
 import comparison.Comparison;
 import comparison.ComparisonBool;
 import comparison.StringComparison;
@@ -12,9 +11,8 @@ import item.work.ComparisonWork;
 import loop.Bracket;
 import loop.For;
 import loop.If;
-import print.Print;
-import print.Println;
-import print.ScannerP;
+import print.*;
+import variable.*;
 
 public interface ActivityItem {
     String typeErrorMessage = "타입 오류가 발생하였습니다.";
@@ -23,6 +21,9 @@ public interface ActivityItem {
     ScannerP scannerP = new ScannerP();
     Print print = new Print();
     Println println = new Println();
+    PriorityPrint priorityPrint = new PriorityPrint();
+    PriorityPrintln priorityPrintln = new PriorityPrintln();
+
     BooleanP booleanP = new BooleanP();
     CharacterP characterP = new CharacterP();
     DoubleP doubleP = new DoubleP();
