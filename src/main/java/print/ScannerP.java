@@ -1,11 +1,12 @@
 package print;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ScannerP {
     private static final String SPECIFIED = "ㅅㅇㅅ";
-    private final String patternText = "\\sㅅㅇㅅ(\\s|$)";
+    private final String patternText = "\\s?ㅅㅇㅅ\\s?";
     private final Pattern pattern = Pattern.compile(patternText);
 
     /**
@@ -24,15 +25,15 @@ public class ScannerP {
     public String start(String line) {
         Scanner scanner = new Scanner(System.in);
         if (check(line)) {
-            line = line.replaceFirst(checkBlank(line), scanner.next());
+            line = line.replaceFirst(SPECIFIED, scanner.next());
             return start(line);
         } else return line;
     }
 
-    private String checkBlank(String line) {
-        if (line.contains(" " + SPECIFIED + " ")) return " " + SPECIFIED + " ";
-        else if (line.contains(" " + SPECIFIED)) return " " + SPECIFIED;
-        else if (line.contains(SPECIFIED + " ")) return SPECIFIED + " ";
-        else return SPECIFIED;
-    }
+//    private String checkBlank(String line) {
+//        if (line.contains(" " + SPECIFIED + " ")) return " " + SPECIFIED + " ";
+//        else if (line.contains(" " + SPECIFIED)) return " " + SPECIFIED;
+//        else if (line.contains(SPECIFIED + " ")) return SPECIFIED + " ";
+//        else return SPECIFIED;
+//    }
 }
