@@ -1,5 +1,5 @@
-package origin.item.kind;
+package origin.variable.define;
 
-public enum VarType {
+public enum VariableType {
     Boolean, Character, Double, Float, Integer, Long, String
 }

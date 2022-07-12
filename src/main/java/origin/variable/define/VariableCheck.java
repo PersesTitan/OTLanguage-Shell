@@ -1,25 +1,20 @@
-package origin.item;
+package origin.variable.define;
 
-import org.jetbrains.annotations.NotNull;
-import origin.item.kind.VarType;
+public class VariableCheck {
+    private final static VariableCheck variableCheck = new VariableCheck();
 
-public class VarCheck {
-    /**
-     * @param line 값을 받아옴
-     * @param varType 변수 타입이 무엇인지 확인함
-     * @return 맞는 변수 타입을 반환함
-     */
-    public boolean check(@NotNull String line, @NotNull VarType varType) {
-        if (varType.equals(VarType.Boolean)) return isBoolean(line);
-        else if (varType.equals(VarType.Character)) return isCharacter(line);
-        else if (varType.equals(VarType.Double)) return isDouble(line);
-        else if (varType.equals(VarType.Float)) return isFloat(line);
-        else if (varType.equals(VarType.Integer)) return isInteger(line);
-        else if (varType.equals(VarType.Long)) return isLong(line);
-        else return varType.equals(VarType.String);
+    public static boolean check(String line, VariableType varType) {
+        if (varType.equals(VariableType.Boolean)) return variableCheck.isBoolean(line);
+        else if (varType.equals(VariableType.Character)) return variableCheck.isCharacter(line);
+        else if (varType.equals(VariableType.Double)) return variableCheck.isDouble(line);
+        else if (varType.equals(VariableType.Float)) return variableCheck.isFloat(line);
+        else if (varType.equals(VariableType.Integer)) return variableCheck.isInteger(line);
+        else if (varType.equals(VariableType.Long)) return variableCheck.isLong(line);
+        else return varType.equals(VariableType.String);
     }
 
     private boolean isBoolean(String line) {
+        line = line.strip();
         line = line.replace("ㅇㅇ", "true");
         line = line.replace("ㄴㄴ", "false");
         if (line.isBlank()) return false;
