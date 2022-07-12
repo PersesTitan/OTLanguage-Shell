@@ -1,13 +1,14 @@
-package http.variable;
+package http.controller;
 
-import http.items.Temporary;
+import http.items.HttpRepository;
+import http.model.HttpWork;
 import http.server.Server;
 
 import java.util.regex.Pattern;
 
-public class StartServer implements Temporary, HttpWork {
+public class StartServer implements HttpRepository, HttpWork {
     //=[^ㅇㅅㅇ^]= [숫자]
-    private final String serverPattern = "^\\s*=\\[\\^ㅇㅅㅇ\\^]= ?\\d*";
+    private final String serverPattern = "^\\s*<<ㅇㅅㅇ>>( [0-9]*)?";
     private final Pattern pattern = Pattern.compile(serverPattern);
 
     @Override
@@ -17,11 +18,10 @@ public class StartServer implements Temporary, HttpWork {
 
     @Override
     public void start(String line) {
-        Temporary.startSetting();
-        if (Pattern.compile("[^0-9]").matcher(line).find()) new Server();
-        else {
+        HttpRepository.startSetting();
+        if (Pattern.compile("[0-9]").matcher(line).find()) {
             int port = Integer.parseInt(line.replaceAll("[^0-9]", ""));
             new Server(port);
-        }
+        } else new Server();
     }
 }
