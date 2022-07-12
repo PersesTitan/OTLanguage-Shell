@@ -1,13 +1,15 @@
-package origin.calculation;
+package math.controller;
 
-import origin.item.work.Check;
+import math.model.CalculationWork;
+import origin.exception.MatchException;
+import origin.exception.MatchMessage;
 
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Account implements Check {
+public class Calculation implements CalculationWork {
     //숫자 기호 숫자
     private final String patternText = "-?\\d+\\.?\\d*\\s*(ㅇ\\+ㅇ|ㅇ-ㅇ|ㅇ\\*ㅇ|ㅇ/ㅇ|ㅇ%ㅇ)\\s*-?\\d+\\.?\\d*";
     private final String singText = "ㅇ\\+ㅇ|ㅇ-ㅇ|ㅇ\\*ㅇ|ㅇ/ㅇ|ㅇ%ㅇ";
@@ -19,7 +21,7 @@ public class Account implements Check {
     private static final char right = ')';
 
     //숫자 기호 숫자가 없어질때까지 반복
-    public String account(String line) throws Exception {
+    private String account(String line) {
         Matcher matcher = pattern.matcher(line);
         while (matcher.find()) {
             String value = matcher.group();
@@ -30,13 +32,13 @@ public class Account implements Check {
                 String number1 = stringTokenizer.nextToken().strip();
                 String number2 = stringTokenizer.nextToken().strip();
                 line = line.replace(value, check(number1, number2, sing));
-            } else throw new Exception("문법 오류");
+            }
         }
         return line;
     }
 
     //소수인지 정수인지 확인하고 값을 계산하는 식
-    public String check(String num1, String num2, String sing) {
+    private String check(String num1, String num2, String sing) {
         if (num1.contains(".") || num2.contains(".")) {
             double number1 = Double.parseDouble(num1);
             double number2 = Double.parseDouble(num2);
@@ -63,13 +65,13 @@ public class Account implements Check {
         return "0";
     }
 
-    private String stack(String line) throws Exception {
+    private String stack(String line) {
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i<line.length(); i++) {
             if (line.charAt(i) == left) {
                 stack.add(i);
             } else if (line.charAt(i) == right) {
-                if (stack.isEmpty()) throw new Exception("괄호의 짝이 맞지 않습니다.");
+                if (stack.isEmpty()) throw new MatchException(MatchMessage.matchError);
                 int start = stack.pop();
                 //(숫자 ㅇ+ㅇ 숫자)
                 String numbers = line.substring(start, i+1);
@@ -77,16 +79,17 @@ public class Account implements Check {
                 i = start;
             }
         }
-
         return account(line);
     }
 
     @Override
-    public boolean check(String line) throws Exception {
+    public boolean check(String line) {
         return pattern.matcher(line).find();
     }
 
-    public String start(String line) throws Exception {
-        return stack(line);
+    @Override
+    public String start(String line) {
+        if (line.contains(Character.toString(left)) || line.contains(Character.toString(right))) return stack(line);
+        else return account(line);
     }
 }
