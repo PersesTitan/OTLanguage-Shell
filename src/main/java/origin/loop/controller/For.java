@@ -1,34 +1,42 @@
-package origin.loop;
+package origin.loop.controller;
 
-import origin.item.Setting;
-import origin.item.work.Check;
+import event.Setting;
+import origin.exception.MatchException;
+import origin.exception.MatchMessage;
+import origin.loop.model.LoopWork;
+import origin.variable.model.Repository;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-public class For extends Setting implements Check {
+public class For extends Setting implements LoopWork, Repository {
     //[숫자]^[숫자]^[숫자]
-    static final String patternText = "(\\n|^\\s*)[\\d\\-.]+\\^[\\d\\-.]+\\^[\\d\\-.]+(\\s*|$)";
+    private static final String patternText = "(\\n|^\\s*)[\\d\\-.]+\\^[\\d\\-.]+\\^[\\d\\-.]+(\\s*|$)";
     private static final Pattern pattern = Pattern.compile(patternText);
 
-    public void start(String lines) throws Exception {
-        List<String> list = Arrays.stream(lines.strip().split(" "))
+    @Override
+    public boolean check(String line) {
+        return pattern.matcher(line).find();
+    }
+
+    @Override
+    public void start(String line) {
+        List<String> list = Arrays.stream(line.strip().split(" "))
                 .filter(Objects::nonNull)
                 .filter(v -> !v.isEmpty())
-                .collect(Collectors.toList());
+                .toList();
 
         String key = list.get(1);
-        if (!uuidMap.containsKey(key) || list.size() != 2) throw new Exception("문법 오류 발생하였습니다.");
+        if (!uuidMap.containsKey(key) || list.size() != 2) throw new MatchException(MatchMessage.grammarError);
         //괄호 제거 작업
         String value = uuidMap.get(key).substring(1, uuidMap.get(key).length()-1).strip();
 
         List<Double> numbers = Arrays.stream(list.get(0).split("\\^"))
                 .mapToDouble(Double::parseDouble)
                 .boxed()
-                .collect(Collectors.toList());
+                .toList();
 
         double first = numbers.get(0);
         double second = numbers.get(1);
@@ -36,20 +44,17 @@ public class For extends Setting implements Check {
 
         if (third < 0) {
             for (double d = first; d > second; d += third) {
-                for (String line : value.split("\\n")) super.start(line);
+                for (String l : value.split("\\n")) super.start(l);
             }
         } else if (third > 0){
             for (double d = first; d < second; d += third) {
-                for (String line : value.split("\\n")) super.start(line);
+                for (String l : value.split("\\n")) super.start(l);
             }
         }
-//        else {
-//
-//        }
     }
 
     @Override
-    public boolean check(String line) {
-        return pattern.matcher(line).find();
+    public String getPattern() {
+        return patternText;
     }
 }

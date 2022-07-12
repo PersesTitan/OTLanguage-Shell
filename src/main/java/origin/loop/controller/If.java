@@ -1,20 +1,24 @@
-package origin.loop;
+package origin.loop.controller;
 
-import origin.item.Setting;
-import origin.item.work.LoopWork;
+import event.Setting;
+import origin.loop.model.LoopWork;
+import origin.variable.model.Repository;
 
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
-public class If extends Setting implements LoopWork {
-    private static final String SPECIFIED = "?ㅅ?";
+public class If extends Setting implements LoopWork, Repository {
     //시작 또는 줄바꿈 [공백] ?ㅅ? [공백 1개 이상]
-    static final String patternText = "(\\n|^)\\s*\\?ㅅ\\?\\s+";
+    private static final String patternText = "(\\n|^)\\s*\\?ㅅ\\?\\s+";
     private static final Pattern pattern = Pattern.compile(patternText);
 
     @Override
-    public void start(String line) throws Exception {
+    public boolean check(String line) {
+        return pattern.matcher(line).find();
+    }
 
+    @Override
+    public void start(String line) {
         StringTokenizer tokenizer = new StringTokenizer(line);
         tokenizer.nextToken();
         String bool = tokenizer.nextToken();
@@ -26,7 +30,7 @@ public class If extends Setting implements LoopWork {
     }
 
     @Override
-    public boolean check(String line) {
-        return pattern.matcher(line).find();
+    public String getPattern() {
+        return patternText;
     }
 }
