@@ -1,12 +1,13 @@
 package http.items;
 
+import http.define.HttpMethodType;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public interface HttpRepository {
-    String http = "=(^ㅇㅅㅇ^)=";
     String dateFormat = "yyyy-MM-dd H:mm:ss";
     Map<String, String> partMap = new HashMap<>(); //http 에 출력될 변수
     Map<String, String> pathMap = new HashMap<>(); //url, html 경로
@@ -49,10 +50,10 @@ public interface HttpRepository {
                         Color.RESET, Color.GREEN, Color.RESET)));
     }
 
-    default void printLog(String method, String path, String query) {
-        //[2022-07-09 16:42:11] GET  [PATH]  /  | QueryString username=Test
+    default void printLog(HttpMethodType method, String path, String query) {
+        //[2022-07-12 18:58:53] GET   [경로]  /  | [값]  name=hi
         System.out.printf("%s[%s]%s", Color.YELLOW, new SimpleDateFormat(dateFormat).format(new Date()), Color.RESET);
-        if (method.equals("POST")) System.out.printf("%s %s %s", Color.POST_PRINT, method, Color.RESET);
+        if (method.equals(HttpMethodType.POST)) System.out.printf("%s %s %s", Color.POST_PRINT, method, Color.RESET);
         else System.out.printf("%s %s  %s", Color.GET_PRINT, method, Color.RESET);
         System.out.print(" [경로] ");
         System.out.printf("%s %s %s",Color.QUERY_PRINT, path == null ? "" : path, Color.RESET);
