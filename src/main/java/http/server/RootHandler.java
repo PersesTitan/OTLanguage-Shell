@@ -3,12 +3,14 @@ package http.server;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import http.define.HttpMethodType;
 import http.handler.HttpGetHandler;
 import http.handler.HttpPostHandler;
 import http.items.HttpRepository;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
@@ -30,16 +32,18 @@ public class RootHandler implements HttpHandler, HttpRepository {
                 headers.add("Content-Type", "text/html;charset=UTF-8");
                 headers.add("Content-Length", String.valueOf(contentLen));
 
-                String method = exchange.getRequestMethod();
+                HttpMethodType method = exchange.getRequestMethod().equals("POST") ?
+                        HttpMethodType.POST : HttpMethodType.GET;
                 String query = exchange.getRequestURI().getQuery();
 
                 String value;
-                if (method.equals("POST")) value = new HttpPostHandler().handle(exchange);
+                if (method.equals(HttpMethodType.POST)) value = new HttpPostHandler().handle(exchange);
                 else value = new HttpGetHandler().handle(exchange);
 
+                //get, /, name=get
                 printLog(method, path, value);
 
-                exchange.sendResponseHeaders(200, contentLen);
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, contentLen);
                 responsive.write(content);
 
             } else {
