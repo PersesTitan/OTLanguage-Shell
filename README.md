@@ -8,4 +8,4 @@ curl https://raw.githubusercontent.com/OTLanguage/.github/main/otlmake.sh | sh
 ### 링크 (link)
 
  - [Github](https://github.com/OTLanguage)
- - [velog](https://velog.io/@persestitan/series/OTLanguage)
+ - [Velog](https://velog.io/@persestitan/series/OTLanguage)
