@@ -9,3 +9,11 @@ curl https://raw.githubusercontent.com/OTLanguage/.github/main/otlmake.sh | sh
 
  - [Github](https://github.com/OTLanguage)
  - [Velog](https://velog.io/@persestitan/series/OTLanguage)
+
+---
+
+### 문법
+
+#### 변수
+ - ㅇㅈㅇ
+ - ㅇㅉㅇ
