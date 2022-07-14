@@ -1,13 +1,11 @@
-
+import etc.reader.ReadJSON;
 import event.Setting;
-import http.items.Color;
 import http.server.Server;
 import origin.exception.FileFailException;
 import origin.exception.FileFailMessage;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 
