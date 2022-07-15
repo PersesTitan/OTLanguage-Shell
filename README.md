@@ -15,6 +15,6 @@ curl https://raw.githubusercontent.com/OTLanguage/.github/main/otlmake.sh | sh
 ### 문법
 
 #### 변수
- - ㅇㅈㅇ
+ - ㅇㅈㅇ [변수명]:[초기값]
  - ㅇㅉㅇ
  - ㅇㅂㅇ
