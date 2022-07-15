@@ -17,3 +17,4 @@ curl https://raw.githubusercontent.com/OTLanguage/.github/main/otlmake.sh | sh
 #### 변수
  - ㅇㅈㅇ
  - ㅇㅉㅇ
+ - ㅇㅂㅇ
