@@ -22,6 +22,7 @@ public class HttpGetPost implements HttpRepository {
     public String start(String line) {
         if (Server.httpServerManager == null) throw new ServerException(ServerMessage.nullServer);
         Matcher matcher = pattern.matcher(line);
+
         while (matcher.find()) {
             String text = matcher.group();
             var texts = text.split(">ㅇㅅㅇ>");
@@ -31,8 +32,8 @@ public class HttpGetPost implements HttpRepository {
             String method = pathAndMethod.nextToken(); // [POST, GET]
 
             String postMethod = "POST";
-            if (method.equals(postMethod)) line = line.replaceFirst(patternText, POST.get(path).get(name).toString());
-            else line = line.replaceFirst(patternText, GET.get(path).get(name).toString());
+            if (method.equals(postMethod)) line = line.replaceFirst(patternText, POST.get(path).getOrDefault(name, "").toString());
+            else line = line.replaceFirst(patternText, GET.get(path).getOrDefault(name, "").toString());
         }
         return line;
     }

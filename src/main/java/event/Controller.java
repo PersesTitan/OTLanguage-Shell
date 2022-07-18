@@ -1,5 +1,6 @@
 package event;
 
+import event.list.ListSetting;
 import http.controller.HttpGetPost;
 import http.controller.PortVariable;
 import origin.consol.controller.ConsoleScanner;
@@ -7,7 +8,7 @@ import origin.loop.define.Bracket;
 import origin.variable.controller.GetVariable;
 import origin.variable.controller.SetVariable;
 
-public interface Controller {
+public interface Controller extends ListSetting {
     //변수
     GetVariable getVariable = new GetVariable();
     SetVariable setVariable = new SetVariable();
