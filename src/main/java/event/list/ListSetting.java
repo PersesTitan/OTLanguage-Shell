@@ -16,26 +16,21 @@ public interface ListSetting extends Repository {
     String getPattern = ":[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9_-]+>>\\d+[ _]"; // :[변수명]>>index[공백]
     String textPattern = "^\\s*[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9_-]+--\\d+"; // [변수명]--index
 
-    VariableListWork setListVariable = new ListVariable(Pattern.compile(setPattern)) {
-        @Override
-        public String start(String line) {
-            Matcher matcher = Pattern.compile(setPattern).matcher(line);
-            if (matcher.find()) {
-                //ㄹㅁㄹ, ㄹㅅㄹ, ...
-                String k = matcher.group().replace(":<<", "");
-                line = line.replaceFirst(setPattern, ""); //값
-                for (String key : repository.keySet()) {
-                    if (repository.get(key).containsKey(k) && VariableCheck.check(line, key)) {
-                        List<Object> list = (List<Object>) repository.get(key).get(k);
-                        list.add(line);
-                        return null;
-                    }
-                }
+    //[값1, 값2, 값3, ...] 인지 값 인지 확인하는 메소드
+    //var = ㄹㅁㄹ, ㄹㄱㄹ, ...
+    static void checkList(List<Object> list, String value, String var) {
+        if (!(var.charAt(0) == 'ㄹ' || var.charAt(0) == 'l')) return;
+        value = value.trim();
+        if (value.startsWith("[") && value.endsWith("]")) {
+            for (String v : value.substring(1, value.length()-1).split(",")) {
+                if (VariableCheck.check(v.trim(), var)) list.add(v.trim());
             }
-            return null;
+        } else {
+            if (VariableCheck.check(value, var)) list.add(value);
         }
-    };
+    }
 
+    //값 불러오기
     VariableListWork getListVariable = new ListVariable(Pattern.compile(getPattern)) {
         @Override
         public String start(String line) {
@@ -60,6 +55,7 @@ public interface ListSetting extends Repository {
         }
     };
 
+    //값 삭제
     VariableListWork deleteListVariable = new ListVariable(Pattern.compile(textPattern)) {
         @Override
         public String start(String line) {
