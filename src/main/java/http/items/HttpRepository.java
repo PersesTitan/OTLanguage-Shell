@@ -11,8 +11,8 @@ public interface HttpRepository {
     String dateFormat = "yyyy-MM-dd H:mm:ss";
     Map<String, String> partMap = new HashMap<>(); //http 에 출력될 변수
     Map<String, String> pathMap = new HashMap<>(); //url, html 경로
-    Map<String, HashMap<String, Object>> POST = new HashMap<>(); //post 로 받은 값 저장
-    Map<String, HashMap<String, Object>> GET = new HashMap<>(); //get 으로 받은 값 저장
+    Map<String, String> POST = new HashMap<>(); //post 로 받은 값 저장
+    Map<String, String> GET = new HashMap<>(); //get 으로 받은 값 저장
 
     static void startSetting() {
         System.out.printf(
