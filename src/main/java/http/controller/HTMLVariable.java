@@ -11,9 +11,16 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 public class HTMLVariable implements HttpWork, HttpRepository {
-    //[url 경로] =^ㅇㅅㅇ^= [페이지 경로]
-    private final String webPage = "^\\s*\\S+\\s+<ㅇㅅㅇ<\\s+\\S+";
-    private final Pattern pattern = Pattern.compile(webPage);
+    //[url 경로] <ㅇㅅㅇ< [페이지 경로]
+    private final String patternText;
+    private final String webPage;
+    private final Pattern pattern;
+
+    public HTMLVariable(String patternText) {
+        this.patternText = patternText;
+        this.webPage = "^\\s*\\S+\\s+"+patternText+"\\s+\\S+";
+        this.pattern = Pattern.compile(webPage);
+    }
 
     @Override
     public boolean check(String line) {
@@ -23,7 +30,7 @@ public class HTMLVariable implements HttpWork, HttpRepository {
     //페이지와 값 세팅
     @Override
     public void start(String line) {
-        String[] values = line.split("<ㅇㅅㅇ<");
+        String[] values = line.split(this.patternText);
         String url = values[0].strip();
         String page = values[1].strip();
         String pages = Setting.path.equals("") ? page : Setting.path + "/" + page;
