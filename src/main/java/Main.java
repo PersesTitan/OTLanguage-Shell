@@ -15,7 +15,10 @@ public class Main extends Setting {
     }
 
     private Main(String[] args) {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("OTLanguage 종료 됨\n")));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (Server.httpServerManager != null) Server.httpServerManager.stop();
+            System.out.println("OTLanguage 종료 됨\n");
+        }));
         firstStart();
 
         if(args.length > 0) path = args[0];
@@ -76,11 +79,6 @@ public class Main extends Setting {
     }
 
     private void pause() {
-        try {
-            System.in.read();
-        } catch (IOException ignored) {} finally {
-            if (Server.httpServerManager != null) Server.httpServerManager.stop();
-        }
-        System.exit(0);
+        while (true) {}
     }
 }
