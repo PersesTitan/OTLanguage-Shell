@@ -33,11 +33,7 @@ public class HttpServerManager implements HttpRepository {
         System.out.printf("URL http://%s:%d/%n", host, port);
         try {
             server = HttpServer.create(new InetSocketAddress(host, port), 0);
-            HttpRepository.pathMap.forEach((k, v) -> {
-                server.createContext(k, new RootHandler());
-                POST.put(k, new HashMap<>());
-                GET.put(k, new HashMap<>());
-            });
+            HttpRepository.pathMap.forEach((k, v) -> server.createContext(k, new RootHandler()));
         } catch (IOException e) {
             System.out.printf("%s서버 생성에 실패하였습니다.%s\n", Color.RED, Color.RESET);
         }
