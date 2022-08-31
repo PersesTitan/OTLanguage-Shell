@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class For extends Setting implements LoopWork, Repository {
+public class For implements LoopWork, Repository {
     //[숫자]^[숫자]^[숫자]
     private static final String patternText = "(\\n|^\\s*)[\\d\\-.]+\\^[\\d\\-.]+\\^[\\d\\-.]+(\\s*|$)";
     private static final Pattern pattern = Pattern.compile(patternText);
@@ -44,11 +44,19 @@ public class For extends Setting implements LoopWork, Repository {
 
         if (third < 0) {
             for (double d = first; d > second; d += third) {
-                for (String l : value.split("\\n")) super.start(l);
+                for (String l : value.split("\\n")) {
+                    BreakContinue breakContinue = settingStart(l);
+                    if (breakContinue.equals(BreakContinue.Break)) return;
+                    if (breakContinue.equals(BreakContinue.Continue)) break;
+                }
             }
         } else if (third > 0){
             for (double d = first; d < second; d += third) {
-                for (String l : value.split("\\n")) super.start(l);
+                for (String l : value.split("\\n")) {
+                    BreakContinue breakContinue = settingStart(l);
+                    if (breakContinue.equals(BreakContinue.Break)) return;
+                    if (breakContinue.equals(BreakContinue.Continue)) break;
+                }
             }
         }
     }
