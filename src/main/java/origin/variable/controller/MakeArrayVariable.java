@@ -2,6 +2,8 @@ package origin.variable.controller;
 
 import origin.variable.model.VariableWork;
 
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class MakeArrayVariable implements VariableWork {
@@ -18,7 +20,7 @@ public class MakeArrayVariable implements VariableWork {
     }
 
     @Override
-    public void start(String line) {
+    public void start(String line, Map<String, Map<String, Object>> repository, Set<String> set) {
 
     }
 }
