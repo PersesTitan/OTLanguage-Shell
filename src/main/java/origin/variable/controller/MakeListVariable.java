@@ -2,12 +2,15 @@ package origin.variable.controller;
 
 import origin.exception.VariableException;
 import origin.exception.VariableMessage;
+import origin.variable.define.VariableCheck;
 import origin.variable.define.VariableType;
 import origin.variable.model.Repository;
 import origin.variable.model.VariableWork;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +33,7 @@ public class MakeListVariable implements VariableWork, Repository {
     }
 
     @Override
-    public void start(String line) {
+    public void start(String line, Map<String, Map<String, Object>> repository, Set<String> set) {
         String patternText = "^\\s*" + variable + "\\s+";
         Pattern pattern = Pattern.compile(patternText); // ㄹㅁㄹ, ㅇㅁㅇ, ...
         Matcher matcher = pattern.matcher(line);
