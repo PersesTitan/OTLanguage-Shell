@@ -8,6 +8,8 @@ import origin.variable.model.Repository;
 import origin.variable.model.VariableWork;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,11 +18,12 @@ public class MakeVariable implements VariableWork, Repository {
     private final String variable;  //ㅇㅅㅇ, ㅇㅁㅇ, ...
     private final VariableType varType;  //Integer, Long, ...
     private final Pattern pattern;
+    private final String varPattern;
 
     public MakeVariable(String variable, VariableType varType) {
         this.variable = variable;
         this.varType = varType;
-        String varPattern = "^\\s*" + variable + "\\s+[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9_-]+:";
+        this.varPattern = "^\\s*" + variable + "\\s+[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9_-]+:";
         this.pattern = Pattern.compile(varPattern);
         repository.put(variable, new HashMap<>());
     }
@@ -31,7 +34,9 @@ public class MakeVariable implements VariableWork, Repository {
     }
 
     @Override
-    public void start(String line) {
+    public void start(String line,
+                      Map<String, Map<String, Object>> repository,
+                      Set<String> set) {
         String patternText = "^\\s*" + variable + "\\s+";
         Pattern pattern = Pattern.compile(patternText); // ㅇㅅㅇ, ㅇㅁㅇ, ...
         Matcher matcher = pattern.matcher(line);
@@ -41,8 +46,7 @@ public class MakeVariable implements VariableWork, Repository {
             //변수:초기값 => 변수 초기값
             StringTokenizer tokenizer = new StringTokenizer(line.replaceAll(patternText, ""), ":");
             String key = tokenizer.nextToken(); //변수
-            String value = tokenizer.nextToken(); //초기값
-            if (value == null) throw new VariableException(VariableMessage.noHaveInitial);
+            String value = line.replaceFirst(varPattern, ""); //초기값
             if (set.contains(key)) throw new VariableException(key + VariableMessage.sameVariable);
             if (!VariableCheck.check(value, varType)) throw new VariableException(VariableMessage.typeMatchError);
             //저장소에 값 저장
